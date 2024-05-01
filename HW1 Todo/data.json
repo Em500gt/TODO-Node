@@ -1,0 +1,52 @@
+{
+  "users": [
+    {
+      "id": "824e8ae8-706f-49e1-bd56-e0b7f0cb315d",
+      "name": "Sergey",
+      "email": "ser@sdadda.com",
+      "password": "$2b$10$rbemAypqG4/6W8jVw.7mqOtNCQRKCE.8ksX9g.BPzN2WwnWGhSOcu",
+      "age": 21
+    },
+    {
+      "id": "7664b3f0-eda0-41b2-bb2e-43ba519e7516",
+      "name": "Egor",
+      "email": "egor@sdadda.com",
+      "password": "$2b$10$QOIVCP4AV1RxqNJd9UDNwO7LmqJuYwSKAZzsa1ggWRazxeE9pkPTS",
+      "age": 26
+    },
+    {
+      "id": "b64e5a66-ddec-45ce-948f-b07768630f4d",
+      "name": "Anton",
+      "email": "anton@sdadda.com",
+      "password": "$2b$10$ed78Yd22zw6P5w6tifUgSO4IFW3I.4jNhZG9BH5Juw3xViJAYzqGq",
+      "age": 26
+    },
+    {
+      "id": "b5b0c4e3-97b5-45e1-a1c1-34d91c2f3ec0",
+      "name": "Nastya",
+      "email": "nastya@sdadda.com",
+      "password": "$2b$10$xwkkQq5ZmHdO3A0jbHTE8OFSxLseQu0ASG1spvyGLCb1eLWOatyZi",
+      "age": 19
+    }
+  ],
+  "task": [
+    {
+      "id": "f633df9e-3f94-4149-88d1-214a2e5eefa7",
+      "title": "Dva Raz",
+      "isCompleted": true,
+      "userId": "b5b0c4e3-97b5-45e1-a1c1-34d91c2f3ec0"
+    },
+    {
+      "id": "c72734a9-1631-42f9-8b8c-9b99f0e2a5dd",
+      "title": "Raz dva",
+      "isCompleted": false,
+      "userId": "b5b0c4e3-97b5-45e1-a1c1-34d91c2f3ec0"
+    },
+    {
+      "id": "eba3a696-9714-4a86-90a1-b0ca3479bf98",
+      "title": "Dva Raz",
+      "isCompleted": false,
+      "userId": "7664b3f0-eda0-41b2-bb2e-43ba519e7516"
+    }
+  ]
+}
