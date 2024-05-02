@@ -4,19 +4,18 @@ const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const Sentry = require("@sentry/node");
 
 class UserControllers {
 
     async registration(req, res) {
         const errors = validationResult(req);
-
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return Sentry.captureException(res.status(400).json({ errors: errors.array() }));
         }
-
         const checking = await userServices.checking(req.body.email)
         if (checking) {
-            return res.status(400).send("Данный электронный адресс существует!");
+            return Sentry.captureException(res.status(400).send("Данный электронный адресс существует!"));
         }
 
         const saltRounds = 10;
@@ -30,24 +29,23 @@ class UserControllers {
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return Sentry.captureException(res.status(400).json({ errors: errors.array() }));
         }
 
         const { email, password } = req.body;
         const user = await userServices.checking(email);
         if (!user) {
-            return res.status(401).send("Неверный email или пароль!");
+            return Sentry.captureException(res.status(401).send("Неверный email или пароль!"));
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(401).send("Неверный email или пароль!");
+            return Sentry.captureException(res.status(401).send("Неверный email или пароль!"));
         }
 
         const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY);
 
         res.json({ token });
-
     }
 }
 

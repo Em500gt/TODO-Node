@@ -16,6 +16,7 @@
   "author": "Egor Malinovski",
   "license": "ISC",
   "dependencies": {
+    "@sentry/node": "^7.113.0",
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "express-validator": "^7.0.1",

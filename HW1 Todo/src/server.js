@@ -5,6 +5,16 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('../swagger-Spec.js');
 require('dotenv').config();
 const PORT = process.env.MY_PORT;
+const Sentry = require("@sentry/node");
+
+
+Sentry.init({
+    dsn: process.env.SENTRY,
+});
+
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
+app.use(Sentry.Handlers.errorHandler());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
