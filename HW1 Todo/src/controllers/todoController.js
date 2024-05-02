@@ -23,21 +23,21 @@ class TodoController {
             return res.status(400).json({ errors: errors.array() });
         }
         await todoServices.updateTitle({ id: req.params.id, title: req.body.title })
-            .then(() => res.send("Title записаны успешно"))
-            .catch(() => res.send("Task не найден"));
+            .then(() => res.status(200).send("Title записаны успешно"))
+            .catch(() => res.status(404).send("Task не найден"));
 
     }
 
     async isCompleted(req, res) {
         await todoServices.updateIsCompleted(req.params.id)
-            .then(() => res.send("isCompleted изменен"))
-            .catch(() => res.send("Task не найден"));
+            .then(() => res.status(200).send("isCompleted изменен"))
+            .catch(() => res.status(404).send("Task не найден"));
     }
 
     async deleteTask(req, res) {
         await todoServices.deleteTask(req.params.id)
-            .then(() => res.send("Task удален"))
-            .catch(() => res.send("Task не найден"));
+            .then(() => res.status(200).send("Task удален"))
+            .catch(() => res.status(404).send("Task не найден"));
     }
 }
 
