@@ -26,11 +26,6 @@ class Validation {
     validTodosIsCompleted() {
         return body("isCompleted").isBoolean().withMessage('IsCompleted -> Должен быть boolean!');
     }
-
-    // validId(){
-    //     return param("id").not().isEmpty().withMessage('ID отсутствует');
-    // }
-
 }
 
 module.exports = new Validation();

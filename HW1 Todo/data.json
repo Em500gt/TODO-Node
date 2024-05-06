@@ -62,6 +62,13 @@
       "email": "nastya@adda.com",
       "password": "$2b$10$DkA.zTl/vNMulOvGh/ozlOnxQ/vA5DW9ZKgVVqjL2pxLmbMhV491y",
       "age": 19
+    },
+    {
+      "id": "d333d9a3-e670-4531-9693-b43b4a3f05ba",
+      "name": "testuser",
+      "email": "test@test.by",
+      "password": "$2b$10$B90scxGRvQGIzrFY.KzRy.s7DtnB4atzae6OesTeTGA7KwQxuCxg.",
+      "age": 19
     }
   ],
   "task": [
@@ -92,7 +99,8 @@
     {
       "id": "1e66501e-169c-48c4-af33-28f5b5933308",
       "isCompleted": false,
-      "userId": "e2f39280-8820-4d08-92ae-4cd07cd38b09"
+      "userId": "e2f39280-8820-4d08-92ae-4cd07cd38b09",
+      "title": "Dva Raz"
     },
     {
       "id": "ce784a49-9548-490a-90e5-2be83b86d4e4",
