@@ -62,13 +62,6 @@
       "email": "nastya@adda.com",
       "password": "$2b$10$DkA.zTl/vNMulOvGh/ozlOnxQ/vA5DW9ZKgVVqjL2pxLmbMhV491y",
       "age": 19
-    },
-    {
-      "id": "d333d9a3-e670-4531-9693-b43b4a3f05ba",
-      "name": "testuser",
-      "email": "test@test.by",
-      "password": "$2b$10$B90scxGRvQGIzrFY.KzRy.s7DtnB4atzae6OesTeTGA7KwQxuCxg.",
-      "age": 19
     }
   ],
   "task": [
