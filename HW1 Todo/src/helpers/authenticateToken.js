@@ -11,7 +11,7 @@ const authenticateToken = (req, res, next) => {
         }
         jwt.verify(token, process.env.SECRET_KEY, (err, id) => {
             if (err) {
-                return Sentry.captureException(new Error('Invalid token'));
+                return Sentry.captureException(res.status(401).send('Invalid token'));
             }
             req.userId = id.userId;
             next();
