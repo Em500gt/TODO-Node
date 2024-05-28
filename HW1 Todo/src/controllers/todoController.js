@@ -1,44 +1,68 @@
 const { validationResult } = require('express-validator');
 const todoServices = require('../services/todoServices.js');
-const { v4: uuidv4 } = require('uuid');
 const Sentry = require("@sentry/node");
 
 class TodoController {
     async create(req, res) {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return Sentry.captureException(res.status(400).json({ errors: errors.array() }));
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            await todoServices.create({ ...req.body, userId: req.userId });
+            res.send("Task добавлен");
         }
-        await todoServices.create({ id: uuidv4(), ...req.body, userId: req.userId });
-        res.send("Task добавлен");
+        catch (error) {
+            Sentry.captureException(error)
+        }
     }
 
     async getMyTask(req, res) {
-        const result = await todoServices.getTask(req.userId);
-        res.send(result);
+        try {
+            const result = await todoServices.getTask(req.userId);
+            res.send(result);
+        }
+        catch (error) {
+            Sentry.captureException(error)
+        }
     }
 
     async updateTitle(req, res) {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return Sentry.captureException(res.status(400).json({ errors: errors.array() }));
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            await todoServices.updateTitle({ id: req.params.id, title: req.body.title })
+                .then(() => res.status(200).send("Title записаны успешно"))
+                .catch(() => res.status(404).send("Task не найден"));
         }
-        await todoServices.updateTitle({ id: req.params.id, title: req.body.title })
-            .then(() => res.status(200).send("Title записаны успешно"))
-            .catch(() => Sentry.captureException(res.status(404).send("Task не найден")));
+        catch (error) {
+            Sentry.captureException(error)
+        }
 
     }
 
     async isCompleted(req, res) {
-        await todoServices.updateIsCompleted(req.params.id)
-            .then(() => res.status(200).send("isCompleted изменен"))
-            .catch(() => Sentry.captureException(res.status(404).send("Task не найден")));
+        try {
+            await todoServices.updateIsCompleted(req.params.id)
+                .then(() => res.status(200).send("isCompleted изменен"))
+                .catch(() => res.status(404).send("Task не найден"));
+        }
+        catch (error) {
+            Sentry.captureException(error)
+        }
     }
 
     async deleteTask(req, res) {
-        await todoServices.deleteTask(req.params.id)
-            .then(() => res.status(200).send("Task удален"))
-            .catch(() => Sentry.captureException(res.status(404).send("Task не найден")));
+        try {
+            await todoServices.deleteTask(req.params.id)
+                .then(() => res.status(200).send("Task удален"))
+                .catch(() => res.status(404).send("Task не найден"));
+        }
+        catch (error) {
+            Sentry.captureException(error)
+        }
     }
 }
 

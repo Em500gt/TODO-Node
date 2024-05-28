@@ -17,8 +17,17 @@ app.use(Sentry.Handlers.tracingHandler());
 app.use(Sentry.Handlers.errorHandler());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 app.use(express.json());
+
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+      console.error('Ошибка парсинга JSON:', err);
+      Sentry.captureException(err);
+      return res.status(400).json({ error: 'Некорректные данные в теле запроса' });
+    }
+    next(err);
+  });
+
 app.use('/', router);
 
 app.listen(PORT, () => {
