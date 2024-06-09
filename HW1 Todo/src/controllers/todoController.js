@@ -9,7 +9,7 @@ class TodoController {
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            await todoServices.create({ ...req.body, userId: req.userId });
+            await todoServices.create({ ...req.body, user: req.userId });
             res.send("Task добавлен");
         }
         catch (error) {
@@ -33,8 +33,13 @@ class TodoController {
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            await todoServices.updateTitle({ id: req.params.id, title: req.body.title })
-                .then(() => res.status(200).send("Title записаны успешно"))
+            await todoServices.updateTitle({ id: req.params.id, userId: req.userId, title: req.body.title })
+                .then((data) => {
+                    if (!data) {
+                        res.status(404).send("Task не обновлен")
+                    }
+                    res.status(200).send("Title записаны успешно")
+                })
                 .catch(() => res.status(404).send("Task не найден"));
         }
         catch (error) {
@@ -45,7 +50,7 @@ class TodoController {
 
     async isCompleted(req, res) {
         try {
-            await todoServices.updateIsCompleted(req.params.id)
+            await todoServices.updateIsCompleted({ id: req.params.id, userId: req.userId })
                 .then(() => res.status(200).send("isCompleted изменен"))
                 .catch(() => res.status(404).send("Task не найден"));
         }
@@ -56,8 +61,13 @@ class TodoController {
 
     async deleteTask(req, res) {
         try {
-            await todoServices.deleteTask(req.params.id)
-                .then(() => res.status(200).send("Task удален"))
+            await todoServices.deleteTask({ id: req.params.id, userId: req.userId })
+            .then((data) => {
+                if (!data) {
+                    res.status(404).send("Task не удален")
+                }
+                res.status(200).send("Task удален успешно")
+            })
                 .catch(() => res.status(404).send("Task не найден"));
         }
         catch (error) {

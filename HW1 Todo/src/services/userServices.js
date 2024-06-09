@@ -1,23 +1,14 @@
-const { getConnection, useDefaultDb } = require("../helpers/mongoHelpers");
-
+const User = require('../model/users')
 class UserServices {
-    #COLLECTION = "users"
 
     async registration(body) {
-        const connection = await getConnection();
-        const db = useDefaultDb(connection);
-        await db.collection(this.#COLLECTION).insertOne(body);
-        connection.close();
+        const result = await new User(body);
+        result.save();
     }
 
     async checking(email) {
-        const connection = await getConnection();
-        const db = useDefaultDb(connection);
-        const [result] = await db.collection(this.#COLLECTION).find({ email: email }).toArray();
-        connection.close();
-        return result;
+        return await User.findOne({email: email});
     }
-
 }
 
 module.exports = new UserServices();

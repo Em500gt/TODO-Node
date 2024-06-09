@@ -1,44 +1,64 @@
-const { getConnection, useDefaultDb } = require("../helpers/mongoHelpers");
-const { ObjectId } = require('mongodb');
+const Todo = require('../model/todos');
 
 class TodoServices {
-    #COLLECTION = "todos"
 
     async create(body) {
-        const connection = await getConnection();
-        const db = await useDefaultDb(connection);
-        await db.collection(this.#COLLECTION).insertOne(body);
-        connection.close();
+        const result = await new Todo(body);
+        result.save();
     }
 
     async getTask(userId) {
-        const connection = await getConnection();
-        const db = useDefaultDb(connection);
-        const result = await db.collection(this.#COLLECTION).aggregate([{ $match: { userId } }]).toArray();
-        connection.close()
-        return result
+        return await Todo.find({ user: userId }).populate({ path: 'user', select: '-password' })
     }
 
     async updateTitle(body) {
-        const connection = await getConnection();
-        const db = useDefaultDb(connection);
-        await db.collection(this.#COLLECTION).updateOne({ _id: new ObjectId(body.id) }, { $set: { title: body.title } })
-        connection.close();
+        return await Todo.findOneAndUpdate(
+            {
+                _id: body.id,
+                user: body.userId
+            },
+            {
+                title: body.title
+            },
+            {
+                new: true
+            }
+        );
     }
 
-    async updateIsCompleted(idTask) {
-        const connection = await getConnection();
-        const db = useDefaultDb(connection);
-        const searchCompeted = await db.collection(this.#COLLECTION).findOne({ _id: new ObjectId(idTask) });
-        await db.collection(this.#COLLECTION).updateOne({ _id: new ObjectId(idTask) }, { $set: { isCompleted: !searchCompeted.isCompleted } })
-        connection.close();
+
+    async updateIsCompleted(body) {
+        const { isCompleted } = await Todo.findOne({
+            _id: body.id,
+            user: body.userId
+        })
+
+        await Todo.findOneAndUpdate(
+            {
+                _id: body.id,
+                user: body.userId
+            },
+            {
+                isCompleted: !isCompleted,
+            },
+            {
+                new: true
+            }
+        )
+
     }
 
-    async deleteTask(idTask) {
-        const connection = await getConnection();
-        const db = useDefaultDb(connection);
-        await db.collection(this.#COLLECTION).deleteOne({ _id: new ObjectId(idTask) });
-        connection.close();
+    async deleteTask(body) {
+        return await Todo.findOneAndDelete(
+            {
+                _id: body.id,
+                user: body.userId
+            },
+            {
+                new: true
+            }
+
+        )
     }
 }
 
